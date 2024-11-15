@@ -1,0 +1,4 @@
+length_x: 4.174084886035492
+length_z: 4.22916730437894
+length_y: 0.0
+eu_distance: 2.76

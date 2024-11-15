@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D T-shirt Cloth Simulation</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- Disable favicon -->
+           
+</head>
+<body>
+         <!-- Load Ammo.js -->
+
+        <script src="./js/ammo.wasm.js"></script>
+        
+        <script>
+        let AmmoInstance; // Singleton instance of Ammo
+
+    async function loadAmmo() {
+        if (!AmmoInstance) { // Check if Ammo is already loaded
+            AmmoInstance = await Ammo({
+                 memory: new WebAssembly.Memory({ initial: 256, maximum: 1024 }),
+                wasmBinaryFile: "./js/ammo.wasm.wasm"
+               
+            });
+            console.log('Ammo loaded:');
+        }
+        return AmmoInstance;
+    }
+        // Define an async function to load Ammo and then execute cloth_simulation.js
+        (async () => {
+            const AmmoModule = await loadAmmo(); 
+            
+            // Initialize cloth simulation after Ammo is loaded
+            startClothSimulation(AmmoModule); // Call the function defined in cloth_simulation.js
+        })();
+
+        // Function to start cloth simulation
+        function startClothSimulation(Ammo) {
+            // Your cloth simulation logic here
+            console.log('Using Ammomod in cloth_simulation.js:');
+            // Initialize your physics world, cloth object, etc.
+            // Dynamically load cloth_simulation.js
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = './cloth_simulation.js';
+            
+            // Pass Ammo as a query parameter (or you can also use a custom event)
+            script.onload = () => {
+                // Trigger an event after loading
+                document.dispatchEvent(new CustomEvent('ammoLoaded', { detail: Ammo }));
+            };
+
+
+            // Append the script to the body
+            document.body.appendChild(script);
+        }
+   
+            
+            
+
+            // Optionally, you can also initialize the simulation right here
+            // if the cloth_simulation.js exports a function for initialization
+       
+    </script>
+</body>
+</html>
+
